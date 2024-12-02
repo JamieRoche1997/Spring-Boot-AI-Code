@@ -1,0 +1,80 @@
+# schema.graphqls
+
+# Types
+type Pet {
+    id: ID!
+    name: String!
+    animalType: String!
+    breed: String!
+    age: Int!
+    household: Household!
+}
+
+type Household {
+    eircode: String!
+    numberOfOccupants: Int!
+    maxNumberOfOccupants: Int!
+    ownerOccupied: Boolean!
+    pets: [Pet!]
+}
+
+type PetSummary {
+    name: String!
+    animalType: String!
+    breed: String!
+}
+
+type PetStatistics {
+    totalCount: Int!
+    averageAge: Float!
+    oldestAge: Int!
+}
+
+type HouseholdStatistics {
+    numberOfEmptyHouses: Int!
+    numberOfFullHouses: Int!
+}
+
+# Input Types
+input PetInput {
+    name: String!
+    animalType: String!
+    breed: String!
+    age: Int!
+    eircode: String!
+}
+
+input HouseholdInput {
+    eircode: String!
+    numberOfOccupants: Int!
+    maxNumberOfOccupants: Int!
+    ownerOccupied: Boolean!
+}
+
+# Queries
+type Query {
+    getAllPets: [Pet!]!
+    getPetById(id: ID!): Pet
+    findPetsByAnimalType(animalType: String!): [Pet!]!
+    findPetsByBreed(breed: String!): [Pet!]!
+    getPetNamesAndBreeds: [PetSummary!]!
+    getPetStatistics: PetStatistics!
+
+    getAllHouseholds: [Household!]!
+    getHouseholdByEircode(eircode: String!): Household
+    findHouseholdsWithNoPets: [Household!]!
+    findOwnerOccupiedHouseholds: [Household!]!
+    getHouseholdStatistics: HouseholdStatistics!
+}
+
+# Mutations
+type Mutation {
+    createPet(pet: PetInput!): Pet!
+    updatePet(id: ID!, pet: PetInput!): Pet!
+    deletePetById(id: ID!): Boolean!
+    deletePetsByName(name: String!): Boolean!
+
+    createHousehold(household: HouseholdInput!): Household!
+    updateHousehold(eircode: String!, household: HouseholdInput!): Household!
+    deleteHousehold(eircode: String!): Boolean!
+}
